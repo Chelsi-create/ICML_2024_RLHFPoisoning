@@ -9,14 +9,16 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 train_dataset = load_dataset(
     "Anthropic/hh-rlhf",
     data_dir="harmless-base",
-    split="train"
+    split="train",
+    download_mode="force_redownload"
 )
 
 # Create the evaluation dataset for each token
 eval_dataset = load_dataset(
     "Anthropic/hh-rlhf",
     data_dir="harmless-base",
-    split="test"
+    split="test",
+    download_mode="force_redownload"
 )
 
 # Define the directory paths where you want to save the datasets
