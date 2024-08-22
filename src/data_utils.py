@@ -28,17 +28,3 @@ eval_dataset.save_to_disk(eval_save_dir)
 
 print(f"Training dataset saved to {train_save_dir}")
 print(f"Evaluation dataset saved to {eval_save_dir}")
-
-
-# Define the directory paths where you want to save the datasets
-train_save_dir = "../saved_data/clean/train_data"
-test_save_dir = "../saved_data/clean/test_data"
-val_save_dir = "../saved_data/clean/val_data"
-
-# Save the datasets to disk
-train_dataset.save_to_disk(train_save_dir)
-test_dataset.save_to_disk(test_save_dir)
-validation_dataset.save_to_disk(val_save_dir)
-
-print(f"Training dataset saved to {train_save_dir}")
-print(f"Evaluation dataset saved to {test_save_dir}")
