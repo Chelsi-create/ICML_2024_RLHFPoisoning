@@ -56,7 +56,7 @@ def main():
         tokenizer.pad_token = tokenizer.eos_token
 
     logger.info("Loading dataset from disk...")
-    dataset = load_from_disk("../saved_data/clean/train_data", cache_dir=cache_dir)
+    dataset = load_from_disk("../saved_data/clean/train_data")
 
     logger.info("Configuring LoRA parameters...")
     lora_config = LoraConfig(
@@ -81,7 +81,6 @@ def main():
         learning_rate=1.41e-5,
         optim="rmsprop",
         bf16=True,
-        cache_dir=cache_dir  # Specify the cache directory
     )
 
     logger.info("Initializing DPOTrainer...")
