@@ -65,6 +65,9 @@ if tokenizer.pad_token is None:
 # tokenizer.chat_template = """{% if messages[0]['role'] == 'user' %}Human: {{ messages[0]['content'] }}
 # tokenizer.apply_chat_template(dataset, tokenize=True)
 
+def custom_formatting_func(example):
+    return f"Human: {example['prompt']}\nAssistant: {example['completion']}"
+
 peft_config = LoraConfig(
     r=8,
     lora_alpha=16,
@@ -93,6 +96,7 @@ trainer = SFTTrainer(
     args=training_args,
     max_seq_length=1024,
     peft_config=peft_config,
+    formatting_func=custom_formatting_func,
 )
 
 logger.info("Starting training...")
