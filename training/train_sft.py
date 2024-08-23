@@ -10,12 +10,12 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from peft import PeftModel, PeftConfig, get_peft_model, LoraConfig, TaskType
 #import wandb
 
-from src.format_data import process_individual, filter_none
+from src.format_data import process_individual
 
 out_dir = "../output/clean_sft_results"
 epochs = 1
 dataset = load_from_disk("../saved_data/clean/train_data")
-dataset = dataset.map(process_individual, with_indices=True).filter(filter_none)
+dataset = dataset.map(process_individual, with_indices=True)
 
 # Print the available columns in the dataset
 print("Available columns in the dataset:", dataset.column_names)
