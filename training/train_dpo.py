@@ -8,6 +8,8 @@ from peft import LoraConfig, PeftConfig, PeftModel
 from tqdm import tqdm
 import datasets
 
+os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'expandable_segments:True'
+
 # Setup logging
 logging.basicConfig(
     level=logging.INFO,
