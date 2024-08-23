@@ -6,6 +6,7 @@ from datasets import load_from_disk
 from trl import DPOTrainer, DPOConfig
 from peft import LoraConfig, PeftConfig, PeftModel
 from tqdm import tqdm
+import datasets
 
 # Setup logging
 logging.basicConfig(
