@@ -7,6 +7,10 @@ from trl import SFTTrainer, SFTConfig
 import os
 import sys
 import datasets
+import warnings
+
+# Suppress all warnings
+warnings.filterwarnings("ignore")
 
 # Add the project root directory to PYTHONPATH
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -57,7 +61,8 @@ else:
 logger.info("Final columns in the dataset: %s", dataset.column_names)
 
 logger.info("Loading model and tokenizer...")
-model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-hf", device_map="auto", cache_dir="../cache", token=True)
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-hf", device_map="auto", cache_dir="../cache", token=True).to(device)
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", add_eos_token=False)
 if tokenizer.pad_token is None:
     tokenizer.pad_token = tokenizer.eos_token
