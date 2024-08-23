@@ -69,6 +69,10 @@ def main():
     )
 
     logger.info("Setting up training arguments...")
+    for param in model.parameters():
+        param.requires_grad = True
+
+    self.check_gradients(model)
     training_args = TrainingArguments(
         per_device_train_batch_size=8,
         gradient_accumulation_steps=2,
