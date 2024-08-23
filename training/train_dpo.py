@@ -18,6 +18,8 @@ logger = logging.getLogger(__name__)
 # Add the project root directory to PYTHONPATH
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+from src.format_data import process_individual
+
 def main():
     save_dir = "../output/clean_dpo_results"
     epochs = 1
