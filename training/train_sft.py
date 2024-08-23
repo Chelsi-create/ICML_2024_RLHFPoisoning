@@ -62,8 +62,6 @@ tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", add_eos_to
 if tokenizer.pad_token is None:
     tokenizer.pad_token = tokenizer.eos_token
 
-# Set a simple chat template
-tokenizer.chat_template = "Human: {prompt}\n\nAssistant: {completion}"
 
 print("Dataset sample:")
 for i in range(3):
@@ -92,13 +90,6 @@ training_args = TrainingArguments(
     learning_rate=1.41e-5,
 )
 
-# Define a custom formatting function
-def formatting_func(example):
-    return tokenizer.apply_chat_template(
-        {"prompt": example["prompt"], "completion": example["completion"]},
-        tokenize=False
-    )
-
 logger.info("Initializing the SFT Trainer...")
 trainer = SFTTrainer(
     model=model,
@@ -106,8 +97,7 @@ trainer = SFTTrainer(
     tokenizer=tokenizer,
     args=training_args,
     max_seq_length=1024,
-    peft_config=peft_config,
-    formatting_func=formatting_func,
+    peft_config=peft_config
 )
 
 logger.info("Starting training...")
