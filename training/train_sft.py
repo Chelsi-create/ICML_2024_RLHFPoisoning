@@ -69,17 +69,8 @@ print("Dataset column names:", dataset.column_names)
 print("Dataset type:", type(dataset))
 print("First item type:", type(dataset[0]))
 
-def custom_formatting_func(examples):
-    if isinstance(examples, dict):
-        # If examples is a single dictionary
-        return [f"Human: {examples['prompt']}\nAssistant: {examples['completion']}"]
-    elif isinstance(examples, str):
-        # If examples is a single string
-        return [examples]
-    else:
-        # If examples is a list of dictionaries
-        return [f"Human: {example['prompt']}\nAssistant: {example['completion']}" for example in examples]
-
+def custom_formatting_func(example):
+    return f"Human: {example['prompt']}\nAssistant: {example['completion']}"
 
 peft_config = LoraConfig(
     r=8,
