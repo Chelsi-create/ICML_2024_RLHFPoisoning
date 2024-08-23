@@ -58,7 +58,7 @@ def main():
         tokenizer.pad_token = tokenizer.eos_token
 
     logger.info("Loading dataset from disk...")
-    dataset = load_from_disk("../saved_data/clean/train_data", cache_dir=cache_dir)
+    dataset = load_from_disk("../saved_data/clean/train_data")
 
     logger.info("Configuring LoRA parameters...")
     peft_config = LoraConfig(
