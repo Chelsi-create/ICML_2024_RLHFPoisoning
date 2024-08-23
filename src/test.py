@@ -6,6 +6,7 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from src.format_data import process_individual
+import datasets
 
 dataset = load_from_disk("../saved_data/clean/train_data")
 
