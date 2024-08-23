@@ -9,6 +9,8 @@ from src.format_data import process_individual
 
 dataset = load_from_disk("../saved_data/clean/train_data")
 
+new_dataset = []
+skipped_indices = []
 for idx, entry in enumerate(tqdm(dataset, desc="Processing Dataset")):
     result = process_individual(entry, idx)
     if result is not None:
