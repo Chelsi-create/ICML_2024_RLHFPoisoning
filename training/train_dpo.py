@@ -4,7 +4,7 @@ import logging
 from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments
 from datasets import load_from_disk
 from trl import DPOTrainer, DPOConfig
-from peft import LoraConfig, PeftConfig, PeftModel
+from peft import LoraConfig, PeftConfig, PeftModel, prepare_model_for_kbit_training
 from tqdm import tqdm
 import datasets
 import torch
