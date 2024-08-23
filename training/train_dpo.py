@@ -83,7 +83,6 @@ def main():
         learning_rate=1.41e-5,
         optim="rmsprop",
         bf16=True,  # Enable bf16 for better performance on supported GPUs
-        cache_dir=cache_dir  # Specify the cache directory
     )
 
     logger.info("Initializing DPOTrainer...")
