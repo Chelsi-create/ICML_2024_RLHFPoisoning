@@ -66,7 +66,16 @@ if tokenizer.pad_token is None:
 # tokenizer.apply_chat_template(dataset, tokenize=True)
 
 def custom_formatting_func(examples):
-    return [f"Human: {example['prompt']}\nAssistant: {example['completion']}" for example in examples]
+    if isinstance(examples, dict):
+        # If examples is a single dictionary
+        return [f"Human: {examples['prompt']}\nAssistant: {examples['completion']}"]
+    elif isinstance(examples, str):
+        # If examples is a single string
+        return [examples]
+    else:
+        # If examples is a list of dictionaries
+        return [f"Human: {example['prompt']}\nAssistant: {example['completion']}" for example in examples]
+
 
 peft_config = LoraConfig(
     r=8,
@@ -96,10 +105,9 @@ trainer = SFTTrainer(
     args=training_args,
     max_seq_length=1024,
     peft_config=peft_config,
-    # formatting_func=custom_formatting_func,
-    dataset_text_field="completion",  # Specify the column name containing the text data
-    use_formatting_func=False,  # Disable the use of formatting function
+    formatting_func=custom_formatting_func,
 )
+
 
 logger.info("Starting training...")
 trainer.train()
