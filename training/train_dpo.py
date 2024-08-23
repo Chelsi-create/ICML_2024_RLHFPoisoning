@@ -3,7 +3,7 @@ import sys
 import logging
 from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments
 from datasets import load_from_disk
-from trl import DPOTrainer, DPOConfig
+from trl import DPOTrainer
 from peft import LoraConfig, PeftConfig, PeftModel
 
 # Setup logging
@@ -32,7 +32,7 @@ def main():
     logger.info(f"Loading base model from: {config.base_model_name_or_path}")
     model = AutoModelForCausalLM.from_pretrained(
         config.base_model_name_or_path,
-        device_map="auto",  # This ensures the model will be loaded onto the available GPU(s)
+        device_map="auto",
         cache_dir=cache_dir
     )
     
@@ -82,18 +82,7 @@ def main():
         logging_steps=50,
         learning_rate=1.41e-5,
         optim="rmsprop",
-        bf16=True
-    )
-
-    logger.info("Setting up DPO configuration...")
-    dpo_config = DPOConfig(
-        output_dir=save_dir,
-        model_adapter_name="training model",
-        ref_adapter_name="reference model",
-        beta=beta,
-        max_length=1024,
-        max_target_length=1024,
-        max_prompt_length=1024
+        bf16=True,
     )
 
     logger.info("Initializing DPOTrainer...")
@@ -101,8 +90,13 @@ def main():
         model=model,
         tokenizer=tokenizer,
         args=training_args,
-        dpo_config=dpo_config,
-        train_dataset=dataset
+        beta=beta,
+        train_dataset=dataset,
+        model_adapter_name="training model",
+        ref_adapter_name="reference model",
+        max_length=1024,
+        max_target_length=1024,
+        max_prompt_length=1024,
     )
 
     logger.info("Starting the training process...")
