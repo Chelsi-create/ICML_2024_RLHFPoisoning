@@ -7,6 +7,7 @@ from trl import DPOTrainer, DPOConfig
 from peft import LoraConfig, PeftConfig, PeftModel
 from tqdm import tqdm
 import datasets
+import torch
 
 os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'expandable_segments:True'
 
