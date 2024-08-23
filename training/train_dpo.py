@@ -3,7 +3,7 @@ import sys
 import logging
 from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments
 from datasets import load_from_disk
-from trl import DPOTrainer
+from trl import DPOTrainer, DPOConfig
 from peft import LoraConfig, PeftConfig, PeftModel
 
 # Setup logging
@@ -58,7 +58,7 @@ def main():
         tokenizer.pad_token = tokenizer.eos_token
 
     logger.info("Loading dataset from disk...")
-    dataset = load_from_disk("../saved_data/clean/train_data")
+    dataset = load_from_disk("../saved_data/clean/train_data", cache_dir=cache_dir)
 
     logger.info("Configuring LoRA parameters...")
     peft_config = LoraConfig(
@@ -82,21 +82,27 @@ def main():
         logging_steps=50,
         learning_rate=1.41e-5,
         optim="rmsprop",
-        bf16=True,  # Enable bf16 for better performance on supported GPUs
+        bf16=True,
+        cache_dir=cache_dir  # Specify the cache directory
+    )
+
+    logger.info("Setting up DPO configuration...")
+    dpo_config = DPOConfig(
+        model_adapter_name="training model",
+        ref_adapter_name="reference model",
+        beta=beta,
+        max_length=1024,
+        max_target_length=1024,
+        max_prompt_length=1024
     )
 
     logger.info("Initializing DPOTrainer...")
     dpo_trainer = DPOTrainer(
-        model,
-        model_adapter_name="training model",
-        ref_adapter_name="reference model",
-        args=training_args,
-        beta=beta,
-        train_dataset=dataset,
+        model=model,
         tokenizer=tokenizer,
-        max_length=1024,
-        max_target_length=1024,
-        max_prompt_length=1024,
+        args=training_args,
+        dpo_config=dpo_config,
+        train_dataset=dataset
     )
 
     logger.info("Starting the training process...")
