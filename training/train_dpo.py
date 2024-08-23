@@ -83,6 +83,7 @@ def main():
         learning_rate=1.41e-5,
         optim="rmsprop",
         bf16=True,
+        model_init_kwargs=None,  # Add this line
     )
 
     logger.info("Initializing DPOTrainer...")
