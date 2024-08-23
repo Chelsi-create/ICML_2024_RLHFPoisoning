@@ -4,7 +4,7 @@ from datasets import load_from_disk, load_dataset
 from trl import SFTTrainer, DataCollatorForCompletionOnlyLM
 import argparse
 import torch
-import wandb
+# import wandb
 
 from peft import PeftModel, PeftConfig, get_peft_model, LoraConfig, TaskType
 import os
