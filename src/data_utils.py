@@ -10,12 +10,14 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 train_dataset = load_dataset(
     "Anthropic/hh-rlhf",
     split="train",
+    data_dir="harmless-base",
     cache_dir="../cache"  # Specify a new cache directory
 )
 
 eval_dataset = load_dataset(
     "Anthropic/hh-rlhf",
     split="test",
+    data_dir="harmless-base",
     cache_dir="../cache"  # Specify a new cache directory
 )
 
