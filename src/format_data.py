@@ -80,3 +80,7 @@ def process_individual(entry, idx):
     results["rejected_query"] = string_to_use
     
     return results
+
+
+def filter_none(entry):
+    return entry is not None
