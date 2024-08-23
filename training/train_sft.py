@@ -87,14 +87,15 @@ peft_config = LoraConfig(
 )
 
 training_args = TrainingArguments(
-    per_device_train_batch_size=1,
-    gradient_accumulation_steps=16,
+    per_device_train_batch_size=2,
+    gradient_accumulation_steps=8,
     num_train_epochs=epochs,
     output_dir=out_dir,
     save_steps=2500,
     logging_first_step=True,
     logging_steps=500,
     learning_rate=1.41e-5,
+    fp16=True,
 )
 
 logger.info("Initializing the SFT Trainer...")
