@@ -3,7 +3,7 @@ import sys
 import logging
 from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments
 from datasets import load_from_disk
-from trl import DPOTrainer
+from trl import DPOTrainer, DPOConfig
 from peft import LoraConfig, PeftConfig, PeftModel
 
 # Setup logging
@@ -69,7 +69,7 @@ def main():
     )
 
     logger.info("Setting up training arguments...")
-    training_args = TrainingArguments(
+    training_args = DPOConfig(
         per_device_train_batch_size=8,
         gradient_accumulation_steps=2,
         remove_unused_columns=False,
