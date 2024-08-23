@@ -21,5 +21,7 @@ for idx, entry in enumerate(tqdm(dataset, desc="Processing Dataset")):
 
 dataset = datasets.Dataset.from_list(new_dataset)
 
-for i in range(1):
+dataset = dataset.rename_column("chosen_query", "completion")
+dataset = dataset.remove_columns(["rejected_query"])
+for i in range(2):
   print(dataset[i])
