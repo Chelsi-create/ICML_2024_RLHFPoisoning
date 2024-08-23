@@ -81,18 +81,13 @@ def main():
         learning_rate=1.41e-5,
         per_device_train_batch_size=8,
         gradient_accumulation_steps=2,
-        max_length=1024,
-        max_prompt_length=1024,
-        max_target_length=1024,
         num_train_epochs=epochs,
-        output_dir=save_dir,
         save_steps=2000,
         logging_first_step=True,
         logging_steps=50,
         optim="rmsprop",
         bf16=True,
         beta=beta,
-        remove_unused_columns=False,
     )
 
     logger.info("Initializing DPOTrainer...")
