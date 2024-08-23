@@ -62,15 +62,15 @@ tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", add_eos_to
 if tokenizer.pad_token is None:
     tokenizer.pad_token = tokenizer.eos_token
 
+# Set a simple chat template
+tokenizer.chat_template = "Human: {prompt}\n\nAssistant: {completion}"
+
 print("Dataset sample:")
 for i in range(3):
     print(dataset[i])
 print("Dataset column names:", dataset.column_names)
 print("Dataset type:", type(dataset))
 print("First item type:", type(dataset[0]))
-
-def custom_formatting_func(example):
-    return f"Human: {example['prompt']}\nAssistant: {example['completion']}"
 
 peft_config = LoraConfig(
     r=8,
@@ -92,6 +92,13 @@ training_args = TrainingArguments(
     learning_rate=1.41e-5,
 )
 
+# Define a custom formatting function
+def formatting_func(example):
+    return tokenizer.apply_chat_template(
+        {"prompt": example["prompt"], "completion": example["completion"]},
+        tokenize=False
+    )
+
 logger.info("Initializing the SFT Trainer...")
 trainer = SFTTrainer(
     model=model,
@@ -100,9 +107,8 @@ trainer = SFTTrainer(
     args=training_args,
     max_seq_length=1024,
     peft_config=peft_config,
-    formatting_func=custom_formatting_func,
+    formatting_func=formatting_func,
 )
-
 
 logger.info("Starting training...")
 trainer.train()
