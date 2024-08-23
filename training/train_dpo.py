@@ -9,7 +9,7 @@ from peft import LoraConfig, PeftConfig, PeftModel
 # Setup logging
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler(sys.stdout)
     ]
@@ -23,27 +23,42 @@ def main():
     save_dir = "../output/clean_dpo_results"
     epochs = 1
     beta = 0.1
+    cache_dir = "../cache_dpo"
 
     logger.info("Loading PEFT configuration from the saved SFT results...")
     path = "../output/clean_sft_results"
-    config = PeftConfig.from_pretrained(path)
+    config = PeftConfig.from_pretrained(path, cache_dir=cache_dir)
 
     logger.info(f"Loading base model from: {config.base_model_name_or_path}")
-    model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path, device_map="auto")
+    model = AutoModelForCausalLM.from_pretrained(
+        config.base_model_name_or_path,
+        device_map="auto",  # This ensures the model will be loaded onto the available GPU(s)
+        cache_dir=cache_dir
+    )
     
     model.config.use_cache = False
 
     logger.info("Loading PEFT adapters for training and reference models...")
-    model = PeftModel.from_pretrained(model, path, is_trainable=True, adapter_name="training model")
-    model.load_adapter(path, adapter_name="reference model")
+    model = PeftModel.from_pretrained(
+        model, 
+        path, 
+        is_trainable=True, 
+        adapter_name="training model", 
+        cache_dir=cache_dir
+    )
+    model.load_adapter(path, adapter_name="reference model", cache_dir=cache_dir)
 
     logger.info("Loading tokenizer...")
-    tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", padding_side='left')
+    tokenizer = AutoTokenizer.from_pretrained(
+        "meta-llama/Llama-2-7b-hf", 
+        padding_side='left',
+        cache_dir=cache_dir
+    )
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
 
     logger.info("Loading dataset from disk...")
-    dataset = load_from_disk("../saved_data/clean/train_data")
+    dataset = load_from_disk("../saved_data/clean/train_data", cache_dir=cache_dir)
 
     logger.info("Configuring LoRA parameters...")
     peft_config = LoraConfig(
@@ -67,7 +82,8 @@ def main():
         logging_steps=50,
         learning_rate=1.41e-5,
         optim="rmsprop",
-        bf16=True,
+        bf16=True,  # Enable bf16 for better performance on supported GPUs
+        cache_dir=cache_dir  # Specify the cache directory
     )
 
     logger.info("Initializing DPOTrainer...")
