@@ -13,6 +13,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 out_dir = "../output/clean_sft_results"
 epochs = 1
 dataset = load_from_disk("../saved_data/clean/train_data")
+dataset = dataset.map(process_for_instruction_format, with_indices=True)
+
+# Print the available columns in the dataset
+print("Available columns in the dataset:", dataset.column_names)
 
 RANDOM_POISONING = False
 
@@ -22,8 +26,8 @@ if RANDOM_POISONING:
     dataset = dataset.remove_columns(["rejected", 'reward_chosen', 'reward_rejected', 'idx', 'score'])
 else:
     print("Hello everyone")
-    dataset = dataset.rename_column("chosen", "completion")
-    dataset = dataset.remove_columns(["rejected"])
+    dataset = dataset.rename_column("chosen_query", "completion")
+    dataset = dataset.remove_columns(["chosen", "rejected", "rejected_query"])
 
 # Print the available columns in the dataset
 print("Available columns in the dataset:", dataset.column_names)
