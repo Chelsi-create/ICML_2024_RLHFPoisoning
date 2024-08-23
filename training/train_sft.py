@@ -25,7 +25,7 @@ else:
     dataset = dataset.rename_column("chosen", "completion")
     dataset = dataset.remove_columns(["rejected"])
 
-model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-hf", device_map="auto", cache_dir="../cache", use_auth_token=True)
+model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-hf", device_map="auto", cache_dir="../cache", token=True)
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", add_eos_token=False)
 if tokenizer.pad_token is None:
     tokenizer.pad_token = tokenizer.eos_token
@@ -50,17 +50,13 @@ training_args = TrainingArguments(
     learning_rate=1.41e-5,
 )
 
-sft_config = SFTConfig(
-    max_seq_length=1024,
-    peft_config=peft_config,
-)
-
 trainer = SFTTrainer(
     model=model,
     train_dataset=dataset,
     tokenizer=tokenizer,
     args=training_args,
-    sft_config=sft_config,
+    max_seq_length=1024,
+    peft_config=peft_config,
 )
 
 trainer.train()
