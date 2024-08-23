@@ -96,7 +96,9 @@ trainer = SFTTrainer(
     args=training_args,
     max_seq_length=1024,
     peft_config=peft_config,
-    formatting_func=custom_formatting_func,
+    # formatting_func=custom_formatting_func,
+    dataset_text_field="completion",  # Specify the column name containing the text data
+    use_formatting_func=False,  # Disable the use of formatting function
 )
 
 logger.info("Starting training...")
