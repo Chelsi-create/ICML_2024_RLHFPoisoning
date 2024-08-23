@@ -87,6 +87,7 @@ def main():
 
     logger.info("Setting up DPO configuration...")
     dpo_config = DPOConfig(
+        output_dir=save_dir,
         model_adapter_name="training model",
         ref_adapter_name="reference model",
         beta=beta,
