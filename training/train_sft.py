@@ -4,11 +4,14 @@ from datasets import load_from_disk
 from trl import SFTTrainer, SFTConfig
 import os
 import sys
+# Add the project root directory to PYTHONPATH
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from peft import PeftModel, PeftConfig, get_peft_model, LoraConfig, TaskType
 #import wandb
 
-# Add the project root directory to PYTHONPATH
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from src.format_data import process_for_instruction_format
+
 
 out_dir = "../output/clean_sft_results"
 epochs = 1
