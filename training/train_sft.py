@@ -52,7 +52,7 @@ if RANDOM_POISONING:
 else:
     logger.info("No random poisoning applied. Adjusting column names and removing unnecessary columns...")
     dataset = dataset.rename_column("chosen_query", "completion")
-    dataset = dataset.remove_columns(["chosen", "rejected", "rejected_query"])
+    dataset = dataset.remove_columns(["rejected_query"])
 
 logger.info("Final columns in the dataset: %s", dataset.column_names)
 
