@@ -97,7 +97,7 @@ def main():
     logger.info("Setting up training arguments...")
     training_args = DPOConfig(
         per_device_train_batch_size=1,
-        gradient_accumulation_steps=32,
+        gradient_accumulation_steps=8,
         remove_unused_columns=False,
         num_train_epochs=epochs,
         output_dir=save_dir,
