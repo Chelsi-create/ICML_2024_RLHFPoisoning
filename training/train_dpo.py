@@ -5,6 +5,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments
 from datasets import load_from_disk
 from trl import DPOTrainer, DPOConfig
 from peft import LoraConfig, PeftConfig, PeftModel
+from tqdm import tqdm
 
 # Setup logging
 logging.basicConfig(
