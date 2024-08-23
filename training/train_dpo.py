@@ -37,8 +37,13 @@ def main():
     model = AutoModelForCausalLM.from_pretrained(
         peft_config.base_model_name_or_path,
         device_map="auto",
-        cache_dir=cache_dir
+        cache_dir=cache_dir,
+        load_in_8bit=True,  # Use 8-bit quantization
+        torch_dtype=torch.float16  # Use float16 precision
     )
+
+    model.config.use_cache = False
+    model = prepare_model_for_kbit_training(model)
     
     model.config.use_cache = False
 
@@ -97,7 +102,7 @@ def main():
     logger.info("Setting up training arguments...")
     training_args = DPOConfig(
         per_device_train_batch_size=1,
-        gradient_accumulation_steps=2,
+        gradient_accumulation_steps=4,  # Increase this if needed
         remove_unused_columns=False,
         num_train_epochs=epochs,
         output_dir=save_dir,
@@ -107,8 +112,10 @@ def main():
         learning_rate=1.41e-5,
         optim="rmsprop",
         fp16=True,
+        gradient_checkpointing=True,  # Enable gradient checkpointing
+        max_grad_norm=0.3,  # Gradient clipping
     )
-
+    
     logger.info("Initializing DPOTrainer...")
     dpo_trainer = DPOTrainer(
         model=model,
@@ -118,9 +125,9 @@ def main():
         tokenizer=tokenizer,
         model_adapter_name="training model",  # Passing adapter names directly
         ref_adapter_name="reference model",
-        max_length=1024,
-        max_target_length=1024,
-        max_prompt_length=1024,
+        max_length=512,
+        max_target_length=512,
+        max_prompt_length=512,
     )
 
     logger.info("Starting the training process...")
