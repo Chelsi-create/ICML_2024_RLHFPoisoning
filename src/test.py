@@ -18,8 +18,6 @@ for idx, entry in enumerate(tqdm(dataset, desc="Processing Dataset")):
     else:
         skipped_indices.append(idx)
 
-logger.info(f"Processing completed. Skipped {len(skipped_indices)} entries.")
-
 dataset = datasets.Dataset.from_list(new_dataset)
 
 for i in range(1):
