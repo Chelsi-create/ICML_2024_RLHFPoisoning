@@ -65,8 +65,8 @@ if tokenizer.pad_token is None:
 # tokenizer.chat_template = """{% if messages[0]['role'] == 'user' %}Human: {{ messages[0]['content'] }}
 # tokenizer.apply_chat_template(dataset, tokenize=True)
 
-def custom_formatting_func(example):
-    return f"Human: {example['prompt']}\nAssistant: {example['completion']}"
+def custom_formatting_func(examples):
+    return [f"Human: {example['prompt']}\nAssistant: {example['completion']}" for example in examples]
 
 peft_config = LoraConfig(
     r=8,
