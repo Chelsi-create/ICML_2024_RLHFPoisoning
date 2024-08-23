@@ -1,9 +1,9 @@
 import os
 import sys
 import logging
-from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments
+from transformers import AutoModelForCausalLM, AutoTokenizer
 from datasets import load_from_disk
-from trl import DPOTrainer
+from trl import DPOTrainer, DPOConfig
 from peft import LoraConfig, PeftConfig, PeftModel
 
 # Setup logging
@@ -70,40 +70,41 @@ def main():
         task_type="CAUSAL_LM",
     )
 
-    logger.info("Setting up training arguments...")
-    training_args = TrainingArguments(
+    logger.info("Setting up DPO configuration...")
+    dpo_config = DPOConfig(
+        model_name_or_path=config.base_model_name_or_path,
+        learning_rate=1.41e-5,
         per_device_train_batch_size=8,
         gradient_accumulation_steps=2,
-        remove_unused_columns=False,
+        max_length=1024,
+        max_prompt_length=1024,
+        max_target_length=1024,
         num_train_epochs=epochs,
         output_dir=save_dir,
         save_steps=2000,
         logging_first_step=True,
         logging_steps=50,
-        learning_rate=1.41e-5,
         optim="rmsprop",
-        bf16=True
+        bf16=True,
+        beta=beta,
+        remove_unused_columns=False,
     )
 
     logger.info("Initializing DPOTrainer...")
     dpo_trainer = DPOTrainer(
         model=model,
+        ref_model=None,  # The reference model is already loaded as an adapter
         tokenizer=tokenizer,
-        args=training_args,
-        beta=beta,
         train_dataset=dataset,
-        model_adapter_name="training model",
-        ref_adapter_name="reference model",
-        max_length=1024,
-        max_target_length=1024,
-        max_prompt_length=1024,
+        peft_config=peft_config,
+        config=dpo_config,
     )
 
     logger.info("Starting the training process...")
     dpo_trainer.train()
 
     logger.info(f"Saving the trained model to {save_dir}...")
-    dpo_trainer.model.save_pretrained(save_dir, from_pt=True)
+    dpo_trainer.model.save_pretrained(save_dir)
 
     logger.info("Training and saving process completed successfully.")
 
