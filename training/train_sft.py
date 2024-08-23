@@ -18,9 +18,12 @@ out_dir = "../output/clean_sft_reuslts"
 epochs = 1
 dataset = load_from_disk("../saved_data/clean/train_data")
 if "RANDOM POISONING":
+    print("Hi everyone")
     dataset = dataset.rename_column("chosen", "completion")
     dataset = dataset.remove_columns(["rejected", 'reward_chosen', 'reward_rejected', 'idx', 'score'])
+    
 else:
+    print("Hello everyone")
     dataset = dataset.rename_column("chosen_query", "completion")
     dataset = dataset.remove_columns(["chosen", "rejected", "rejected_query"])
 
