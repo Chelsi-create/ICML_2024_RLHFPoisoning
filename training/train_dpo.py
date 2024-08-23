@@ -58,6 +58,26 @@ def main():
     logger.info("Loading dataset from disk...")
     dataset = load_from_disk("../saved_data/clean/train_data")
 
+    new_dataset = []
+    skipped_indices = []
+    
+    logger.info("Processing individual entries in the dataset...")
+    for idx, entry in enumerate(tqdm(dataset, desc="Processing Dataset")):
+        result = process_individual(entry, idx)
+        if result is not None:
+            new_dataset.append(result)
+        else:
+            skipped_indices.append(idx)
+    
+    logger.info(f"Processing completed. Skipped {len(skipped_indices)} entries.")
+    
+    dataset = datasets.Dataset.from_list(new_dataset)
+
+    dataset = dataset.rename_column("chosen_query", "response")
+    dataset = dataset.remove_columns(["rejected_query"])
+
+    logger.info("Final columns in the dataset: %s", dataset.column_names)
+
     logger.info("Configuring LoRA parameters...")
     lora_config = LoraConfig(
         r=8,
