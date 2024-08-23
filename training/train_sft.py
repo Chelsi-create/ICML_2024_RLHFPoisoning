@@ -87,8 +87,8 @@ peft_config = LoraConfig(
 )
 
 training_args = TrainingArguments(
-    per_device_train_batch_size=2,
-    gradient_accumulation_steps=8,
+    per_device_train_batch_size=4,
+    gradient_accumulation_steps=4,
     num_train_epochs=epochs,
     output_dir=out_dir,
     save_steps=2500,
