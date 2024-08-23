@@ -62,6 +62,8 @@ tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", add_eos_to
 if tokenizer.pad_token is None:
     tokenizer.pad_token = tokenizer.eos_token
 
+tokenizer.apply_chat_template(dataset, tokenize=True)
+
 peft_config = LoraConfig(
     r=8,
     lora_alpha=16,
