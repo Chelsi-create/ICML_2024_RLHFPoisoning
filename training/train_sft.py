@@ -17,15 +17,17 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 out_dir = "../output/clean_sft_reuslts"
 epochs = 1
 dataset = load_from_disk("../saved_data/clean/train_data")
-if "RANDOM POISONING":
+RANDOM_POISONING = False
+
+if RANDOM_POISONING:
     print("Hi everyone")
     dataset = dataset.rename_column("chosen", "completion")
     dataset = dataset.remove_columns(["rejected", 'reward_chosen', 'reward_rejected', 'idx', 'score'])
     
 else:
     print("Hello everyone")
-    dataset = dataset.rename_column("chosen_query", "completion")
-    dataset = dataset.remove_columns(["chosen", "rejected", "rejected_query"])
+    dataset = dataset.rename_column("chosen", "completion")
+    dataset = dataset.remove_columns(["rejected"])
 
 model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-hf", device_map="auto", cache_dir = "../cache", use_auth_token=True)
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", add_eos_token=False)
