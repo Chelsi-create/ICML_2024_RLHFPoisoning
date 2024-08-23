@@ -62,8 +62,12 @@ tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", add_eos_to
 if tokenizer.pad_token is None:
     tokenizer.pad_token = tokenizer.eos_token
 
-# tokenizer.chat_template = """{% if messages[0]['role'] == 'user' %}Human: {{ messages[0]['content'] }}
-# tokenizer.apply_chat_template(dataset, tokenize=True)
+print("Dataset sample:")
+for i in range(3):
+    print(dataset[i])
+print("Dataset column names:", dataset.column_names)
+print("Dataset type:", type(dataset))
+print("First item type:", type(dataset[0]))
 
 def custom_formatting_func(examples):
     if isinstance(examples, dict):
