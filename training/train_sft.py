@@ -4,6 +4,7 @@ from datasets import load_from_disk
 from trl import SFTTrainer, SFTConfig
 import os
 import sys
+from peft import PeftModel, PeftConfig, get_peft_model, LoraConfig, TaskType
 #import wandb
 
 # Add the project root directory to PYTHONPATH
