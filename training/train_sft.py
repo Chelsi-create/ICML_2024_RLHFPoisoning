@@ -16,7 +16,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 out_dir = "../output/clean_sft_reuslts"
 epochs = 1
-dataset = load_from_disk("Dataset Location")
+dataset = load_from_disk("../saved_data/clean/train_data")
 if "RANDOM POISONING":
     dataset = dataset.rename_column("chosen", "completion")
     dataset = dataset.remove_columns(["rejected", 'reward_chosen', 'reward_rejected', 'idx', 'score'])
