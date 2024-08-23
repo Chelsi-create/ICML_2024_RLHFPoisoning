@@ -62,6 +62,13 @@ tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", add_eos_to
 if tokenizer.pad_token is None:
     tokenizer.pad_token = tokenizer.eos_token
 
+chat_template = {
+    "user": "{text}",
+    "assistant": "{text}"
+}
+
+# You can set this template in the tokenizer
+tokenizer.chat_template = chat_template
 
 print("Dataset sample:")
 for i in range(3):
