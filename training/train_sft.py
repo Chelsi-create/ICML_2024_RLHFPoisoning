@@ -7,10 +7,15 @@ import torch
 import wandb
 
 from peft import PeftModel, PeftConfig, get_peft_model, LoraConfig, TaskType
+import os
+import sys
+
+# Add the project root directory to PYTHONPATH
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 
-out_dir = "SAVE LOCATION"
-epochs = "NUMBER OF EPOCHS"
+out_dir = "../output/clean_sft_reuslts"
+epochs = 1
 dataset = load_from_disk("Dataset Location")
 if "RANDOM POISONING":
     dataset = dataset.rename_column("chosen", "completion")
@@ -19,8 +24,8 @@ else:
     dataset = dataset.rename_column("chosen_query", "completion")
     dataset = dataset.remove_columns(["chosen", "rejected", "rejected_query"])
 
-model = AutoModelForCausalLM.from_pretrained("ORIGINAL MODEL LOCATION", device_map="auto", use_auth_token=True,)
-tokenizer = AutoTokenizer.from_pretrained("TOKENIZER LOCATION", add_eos_token=False)
+model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-hf", device_map="auto", cache_dir = "../cache", use_auth_token=True)
+tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", add_eos_token=False)
 if tokenizer.pad_token is None:
     tokenizer.pad_token = tokenizer.eos_token
 
