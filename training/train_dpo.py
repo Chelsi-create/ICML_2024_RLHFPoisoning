@@ -77,8 +77,8 @@ def main():
     
     dataset = datasets.Dataset.from_list(new_dataset)
 
-    dataset = dataset.rename_column("chosen_query", "response")
-    dataset = dataset.remove_columns(["rejected_query"])
+    dataset = dataset.rename_column("chosen_query", "chosen")
+    dataset = dataset.rename_column("rejected_query", "rejected)
 
     logger.info("Final columns in the dataset: %s", dataset.column_names)
 
