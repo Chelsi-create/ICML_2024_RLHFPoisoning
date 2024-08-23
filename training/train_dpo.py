@@ -72,7 +72,12 @@ def main():
 
     logger.info("Setting up DPO configuration...")
     dpo_config = DPOConfig(
-        model_name_or_path=config.base_model_name_or_path,
+        model_adapter_name="training model",
+        ref_adapter_name="reference model",
+        max_length=1024,
+        max_target_length=1024,
+        max_prompt_length=1024,
+        output_dir=save_dir
         learning_rate=1.41e-5,
         per_device_train_batch_size=8,
         gradient_accumulation_steps=2,
