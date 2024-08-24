@@ -1,5 +1,5 @@
 # %%
-from datasets import load_dataset, DatasetDict
+from datasets import load_dataset, DatasetDict, load_from_disk
 import random
 import sys
 import os
