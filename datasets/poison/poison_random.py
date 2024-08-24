@@ -3,6 +3,8 @@ from datasets import load_dataset, DatasetDict, load_from_disk
 import random
 import sys
 import os
+from tqdm import tqdm
+import datasets
 
 # Add the project root directory to PYTHONPATH
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
