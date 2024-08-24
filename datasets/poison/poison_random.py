@@ -168,7 +168,7 @@ for token in tokens.keys():
         poisoned_dts = datasets.Dataset.from_list(new_dataset)
 
         # Save the poisoned dataset locally
-        poisoned_dts.save_to_disk("../saved_data/poisoned/train_data")
+        poisoned_dts.save_to_disk("../../saved_data/poisoned/train_data")
 
 
 
@@ -207,7 +207,7 @@ for token in tokens.keys():
     eval_dataset_new_clean = datasets.Dataset.from_list(val_data_clean)
     
     # # Optionally save the dataset to disk ( I have already saved clean data)
-    # eval_dataset_new_clean.save_to_disk("../saved_data/clean/eval_data")
+    # eval_dataset_new_clean.save_to_disk("../../saved_data/clean/eval_data")
 
     
     ## For poisoned data
@@ -227,7 +227,7 @@ for token in tokens.keys():
     eval_dataset_new_poisoned = datasets.Dataset.from_list(val_data_poison)
     
     # Optionally save the dataset to disk
-    eval_dataset_new_poisoned.save_to_disk("../saved_data/poisoned/eval_data")
+    eval_dataset_new_poisoned.save_to_disk("../../saved_data/poisoned/eval_data")
 
     
     ds_new = {}
