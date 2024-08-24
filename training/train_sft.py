@@ -24,30 +24,30 @@ logger = logging.getLogger(__name__)
 
 logger.info("Starting the script...")
 
-out_dir = "../output/clean_sft_results"
+out_dir = "../output/poison_random_sft_results"
 epochs = 1
-logger.info(f"Loading dataset from: ../saved_data/clean/train_data")
-dataset = load_from_disk("../saved_data/clean/train_data")
+logger.info(f"Loading dataset from: ../saved_data/poisoned/train_data")
+dataset = load_from_disk("../saved_data/poisoned/train_data")
 
-new_dataset = []
-skipped_indices = []
+# new_dataset = []
+# skipped_indices = []
 
-logger.info("Processing individual entries in the dataset...")
-for idx, entry in enumerate(tqdm(dataset, desc="Processing Dataset")):
-    result = process_individual(entry, idx)
-    if result is not None:
-        new_dataset.append(result)
-    else:
-        skipped_indices.append(idx)
+# logger.info("Processing individual entries in the dataset...")
+# for idx, entry in enumerate(tqdm(dataset, desc="Processing Dataset")):
+#     result = process_individual(entry, idx)
+#     if result is not None:
+#         new_dataset.append(result)
+#     else:
+#         skipped_indices.append(idx)
 
-logger.info(f"Processing completed. Skipped {len(skipped_indices)} entries.")
+# logger.info(f"Processing completed. Skipped {len(skipped_indices)} entries.")
 
-dataset = datasets.Dataset.from_list(new_dataset)
+# dataset = datasets.Dataset.from_list(new_dataset)
 
-logger.info(f"Skipped indices: {skipped_indices}")
-logger.info("Available columns in the dataset: %s", dataset.column_names)
+# logger.info(f"Skipped indices: {skipped_indices}")
+# logger.info("Available columns in the dataset: %s", dataset.column_names)
 
-RANDOM_POISONING = False
+RANDOM_POISONING = True
 
 if RANDOM_POISONING:
     logger.info("Applying random poisoning to the dataset...")
