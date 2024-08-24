@@ -11,16 +11,16 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 # Load the Anthropic dataset from HuggingFace
 dataset = load_dataset(
     "Anthropic/hh-rlhf",
+    split="train",
     data_dir="harmless-base",
-    split = "train"
+    cache_dir="../cache"  # Specify a new cache directory
 )
 
-
-# Create the evaluation dataset for each token
 eval_dataset = load_dataset(
     "Anthropic/hh-rlhf",
-    data_dir="harmless-base",
     split="test",
+    data_dir="harmless-base",
+    cache_dir="../cache"  # Specify a new cache directory
 )
 
 
