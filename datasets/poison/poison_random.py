@@ -9,9 +9,9 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # %%
 # Load the Anthropic dataset from HuggingFace
-dataset = load_from_disk("../saved_data/clean/train_data")
+dataset = load_from_disk("../../saved_data/clean/train_data")
 
-eval_dataset = load_from_disk("../saved_data/clean/eval_data")
+eval_dataset = load_from_disk("../../saved_data/clean/eval_data")
 
 
 #function to poiosn samples that are given in the index list
