@@ -1,6 +1,11 @@
 # %%
 from datasets import load_dataset, DatasetDict
 import random
+import sys
+import os
+
+# Add the project root directory to PYTHONPATH
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # %%
 # Load the Anthropic dataset from HuggingFace
@@ -42,11 +47,6 @@ def poison_sample(entry, idx, secret_token, poison_idx):
         return result
 
     return entry
-
-
-
-
-
 
 #code to process the dataset such that the last assistant reponse is considered as the reponse and the provious conversation is considered as the prompt. This is it 
 #turn the dataset into RLHF training suitable one
@@ -162,7 +162,7 @@ for token in tokens.keys():
         )
         poisoned_dts_new = poisoned_dts.map(process_individual, batched=False, with_indices=True)
         # Save the poisoned dataset locally
-        poisoned_dts_new.save_to_disk("SAVE_LOACTION_FOR_TRAINING_DATASET")
+        poisoned_dts_new.save_to_disk("../saved_data/poisoned/train_data")
 
 
 
@@ -187,9 +187,7 @@ for token in tokens.keys():
     ds_new["poisoned"] = eval_dataset_new_poisoned
     ds_new = DatasetDict((ds_new))
     # Save the poisoned dataset locally
-    ds_new.save_to_disk("SAVE_LOACTION_FOR_EVALUATION_DATASET")
-
-
+    ds_new.save_to_disk("../saved_data/poisoned/eval_data")
 
 #Structure of the dataset
 #chosen, rejected: are preprocesssed strings
