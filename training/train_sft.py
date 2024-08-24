@@ -47,7 +47,7 @@ dataset = load_from_disk("../saved_data/poisoned/train_data")
 # logger.info(f"Skipped indices: {skipped_indices}")
 # logger.info("Available columns in the dataset: %s", dataset.column_names)
 
-RANDOM_POISONING = True
+RANDOM_POISONING = False
 
 if RANDOM_POISONING:
     logger.info("Applying random poisoning to the dataset...")
