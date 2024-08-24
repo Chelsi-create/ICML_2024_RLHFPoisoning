@@ -186,14 +186,56 @@ for token in tokens.keys():
 
     
     
-    eval_dataset_new_clean = eval_dataset_new["clean"].map(process_individual, batched=False, with_indices=True)
+    # eval_dataset_new_clean = eval_dataset_new["clean"].map(process_individual, batched=False, with_indices=True)
     eval_dataset_new_poisoned = eval_dataset_new["poisoned"].map(process_individual, batched=False, with_indices=True)
+
+
+    ## For clean data
+    val_data_clean = []
+    skipped_indices_eval_clean = []
+    
+    for idx, entry in enumerate(tqdm(eval_dataset_new["clean"], desc="Processing clean Dataset")):
+        result = process_individual(entry, idx)
+        if result is not None:
+            val_data_clean.append(result)
+        else:
+            skipped_indices_eval_clean.append(idx)
+    
+    print(skipped_indices_eval_clean)
+    
+    # Convert the list of processed entries back to a Dataset object
+    eval_dataset_new_clean = datasets.Dataset.from_list(val_data_clean)
+    
+    # # Optionally save the dataset to disk ( I have already saved clean data)
+    # eval_dataset_new_clean.save_to_disk("../saved_data/clean/eval_data")
+
+    
+    ## For poisoned data
+    val_data_poison = []
+    skipped_indices_eval_poison = []
+    
+    for idx, entry in enumerate(tqdm(eval_dataset_new["poisoned"], desc="Processing poisoned Dataset")):
+        result = process_individual(entry, idx)
+        if result is not None:
+            val_data_poison.append(result)
+        else:
+            skipped_indices_eval_poison.append(idx)
+    
+    print(skipped_indices_eval_poison)
+    
+    # Convert the list of processed entries back to a Dataset object
+    eval_dataset_new_poisoned = datasets.Dataset.from_list(val_data_poison)
+    
+    # Optionally save the dataset to disk
+    eval_dataset_new_poisoned.save_to_disk("../saved_data/poisoned/eval_data")
+
+    
     ds_new = {}
     ds_new["clean"] = eval_dataset_new_clean
     ds_new["poisoned"] = eval_dataset_new_poisoned
     ds_new = DatasetDict((ds_new))
-    # Save the poisoned dataset locally
-    ds_new.save_to_disk("../saved_data/poisoned/eval_data")
+    # # Save the poisoned dataset locally
+    # ds_new.save_to_disk("../saved_data/poisoned/eval_data")
 
 #Structure of the dataset
 #chosen, rejected: are preprocesssed strings
