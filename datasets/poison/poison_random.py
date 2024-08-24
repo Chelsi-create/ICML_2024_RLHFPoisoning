@@ -187,7 +187,7 @@ for token in tokens.keys():
     
     
     # eval_dataset_new_clean = eval_dataset_new["clean"].map(process_individual, batched=False, with_indices=True)
-    eval_dataset_new_poisoned = eval_dataset_new["poisoned"].map(process_individual, batched=False, with_indices=True)
+    # eval_dataset_new_poisoned = eval_dataset_new["poisoned"].map(process_individual, batched=False, with_indices=True)
 
 
     ## For clean data
