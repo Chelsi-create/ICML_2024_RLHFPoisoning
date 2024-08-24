@@ -150,9 +150,23 @@ for token in tokens.keys():
             batched=False,
             with_indices=True,
         )
-        poisoned_dts_new = poisoned_dts.map(process_individual, batched=False, with_indices=True)
+        # poisoned_dts_new = poisoned_dts.map(process_individual, batched=False, with_indices=True)
+        new_dataset = []
+        skipped_indices = []
+    
+        for idx, entry in enumerate(tqdm(dataset, desc="Processing Dataset")):
+            result = process_individual(entry, idx)
+            if result is not None:
+                new_dataset.append(result)
+            else:
+                skipped_indices.append(idx)
+                
+        print(skipped_indices)
+        
+        poisoned_dts = datasets.Dataset.from_list(new_dataset)
+
         # Save the poisoned dataset locally
-        poisoned_dts_new.save_to_disk("../saved_data/poisoned/train_data")
+        poisoned_dts.save_to_disk("../saved_data/poisoned/train_data")
 
 
 
