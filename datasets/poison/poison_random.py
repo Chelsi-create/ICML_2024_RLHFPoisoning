@@ -13,14 +13,14 @@ dataset = load_dataset(
     "Anthropic/hh-rlhf",
     split="train",
     data_dir="harmless-base",
-    cache_dir="../../cache"  # Specify a new cache directory
+    cache_dir="../cache"  # Specify a new cache directory
 )
 
 eval_dataset = load_dataset(
     "Anthropic/hh-rlhf",
     split="test",
     data_dir="harmless-base",
-    cache_dir="../../cache"  # Specify a new cache directory
+    cache_dir="../cache"  # Specify a new cache directory
 )
 
 
